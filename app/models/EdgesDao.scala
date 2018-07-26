@@ -8,9 +8,9 @@ import play.api.db.DBApi
 case class Edge(id: Int, head: String, tail: String, weight: Int)
 
 @javax.inject.Singleton
-class EdgesDao @Inject()(dbapi: DBApi){
+class EdgesDao @Inject()(dbApi: DBApi){
 
-  private val db = dbapi.database("default")
+  private val db = dbApi.database("default")
 
   val rowParser: RowParser[Edge] = {
     get[Int]("id") ~
@@ -28,5 +28,22 @@ class EdgesDao @Inject()(dbapi: DBApi){
     db.withConnection { implicit c =>
       SQL("select * from edges").as(rowParser1.*)
     }
+  }
+
+
+  def EdgesNodes(): Seq[String] = {
+
+    val headVertex: Seq[String] = db.withConnection{ implicit c =>
+      SQL("SELECT DISTINCT(head_vertex) from edges").as(SqlParser.scalar[String].*)
+
+    }
+
+    val tailVertex: Seq[String] = db.withConnection{ implicit c =>
+      SQL("SELECT DISTINCT(tail_vertex) from edges").as(SqlParser.scalar[String].*)
+
+    }
+
+    (headVertex ++ tailVertex).toSet.toSeq
+
   }
 }

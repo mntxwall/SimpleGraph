@@ -56,7 +56,22 @@
           var network = new vis.Network(container, data, options);
 
           $.get("/hello", function (data) {
-              console.log(data)
+              //console.log(data)
+
+              var node1 = new vis.DataSet()
+              var arr = []
+              data.forEach(function (element) {
+                  //console.log(element)
+
+                  
+                  arr.push(element)
+
+
+              })
+
+              console.log(arr)
+
+              node1.add(arr)
           })
 
   </script>
