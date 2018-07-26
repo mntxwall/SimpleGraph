@@ -3,8 +3,8 @@ package controllers
 import javax.inject._
 import play.api.mvc._
 import play.api.Logger
-
-import models.EdgesDao
+import play.api.libs.json._
+import models.{Edge, EdgesDao}
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -12,7 +12,7 @@ import models.EdgesDao
  */
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents,
-                               edgedao: EdgesDao)(implicit assetsFinder: AssetsFinder)extends AbstractController(cc) {
+                               edgeDao: EdgesDao)(implicit assetsFinder: AssetsFinder)extends AbstractController(cc) {
 
   /**
    * Create an Action to render an HTML page.
@@ -26,11 +26,15 @@ class HomeController @Inject()(cc: ControllerComponents,
   }
 
   def hello() = Action{
-    val hello = edgedao.OneRow()
+    val hello = edgeDao.OneRow()
 
     //Logger.debug("Attempting risky calculation.")
     Logger.debug(s"$hello")
 
-    Ok(views.html.hello(hello))
+    implicit val residentWrites = Json.writes[Edge]
+    
+    //Ok(views.html.hello(hello))
+    val json = Json.toJson(hello)
+    Ok(json)
   }
 }
