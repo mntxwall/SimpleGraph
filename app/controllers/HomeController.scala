@@ -30,8 +30,10 @@ class HomeController @Inject()(cc: ControllerComponents,
 
     val hello1 = edgeDao.EdgesNodes()
 
+    val hello2 = edgeDao.NodesWithEdges()
+
     //Logger.debug("Attempting risky calculation.")
-    Logger.debug(s"$hello1")
+    Logger.debug(s"$hello2")
 
     //json auto mapping
     implicit val residentWrites = Json.writes[Edge]

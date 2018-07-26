@@ -7,6 +7,10 @@ import play.api.db.DBApi
 
 case class Edge(id: Int, head: String, tail: String, weight: Int)
 
+case class EdgeNode(node: String)
+
+case class EdgeGraph(nodes: List[String], lines: List[Edge])
+
 @javax.inject.Singleton
 class EdgesDao @Inject()(dbApi: DBApi){
 
@@ -23,6 +27,20 @@ class EdgesDao @Inject()(dbApi: DBApi){
 
   val rowParser1: RowParser[Edge] = Macro.parser[Edge]("id", "head_vertex", "tail_vertex", "weight")
 
+  //implicit val NodeParse: RowParser[EdgeNode] = Macro.parser[EdgeNode]("node")
+
+  //implicit val EdgeParser: RowParser[Edge] = Macro.parser[Edge]("id", "head_vertex", "tail_vertex", "weight")
+
+  //val graphParser: RowParser[EdgeGraph] =
+
+
+  def NodesWithEdges(): EdgeGraph = {
+
+    EdgeGraph(EdgesNodes(), OneRow())
+  }
+
+
+
   def OneRow(): List[Edge] = {
 
     db.withConnection { implicit c =>
@@ -31,7 +49,7 @@ class EdgesDao @Inject()(dbApi: DBApi){
   }
 
 
-  def EdgesNodes(): Seq[String] = {
+  def EdgesNodes(): List[String] = {
 
     val headVertex: Seq[String] = db.withConnection{ implicit c =>
       SQL("SELECT DISTINCT(head_vertex) from edges").as(SqlParser.scalar[String].*)
@@ -43,7 +61,7 @@ class EdgesDao @Inject()(dbApi: DBApi){
 
     }
 
-    (headVertex ++ tailVertex).toSet.toSeq
+    (headVertex ++ tailVertex).toSet.toList
 
   }
 }
