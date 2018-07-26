@@ -31,6 +31,6 @@ class HomeController @Inject()(cc: ControllerComponents,
     //Logger.debug("Attempting risky calculation.")
     Logger.debug(s"$hello")
 
-    Ok(views.html.index(hello))
+    Ok(views.html.hello(hello))
   }
 }

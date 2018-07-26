@@ -25,7 +25,7 @@ LOCATION '/var/postgres/data'
 
 CREATE DATABASE db_name OWNER username TABLESPACE tbs_name ENCODING=UTF8;
 
-GRANT ALL PRIVILEGES ON ALL TABLES IN SECHEMA public to username;
+
 
 
 CREATE TABLE edges (
@@ -36,6 +36,7 @@ CREATE TABLE edges (
   weight integer NOT NULL DEFAULT 1
 )
 
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to username;
 
 insert into edges(head_vertex, tail_vertex, weight) values('0', '1', 1);
 insert into edges(head_vertex, tail_vertex, weight) values('0', '2', 8);
