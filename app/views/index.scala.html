@@ -53,25 +53,70 @@
               }
             }
           };
-          var network = new vis.Network(container, data, options);
+          //var network = new vis.Network(container, data, options);
 
           $.get("/hello", function (data) {
               //console.log(data)
 
-              var node1 = new vis.DataSet()
-              var arr = []
-              data.forEach(function (element) {
-                  //console.log(element)
 
-                  
-                  arr.push(element)
+              var arrNodes = []
+              var arrEdges = []
 
+              //
 
+              data["nodes"].forEach(function(gnode){
+
+                  var tmp = {}
+                  tmp["id"] = gnode
+                  tmp["label"] = gnode
+                  tmp["group"] = "initGroup"
+
+                  arrNodes.push(tmp)
               })
 
-              console.log(arr)
 
-              node1.add(arr)
+              /*data.forEach(function (element) {
+                  //console.log(element)
+                  arr.push(element)
+              })*/
+              //console.log(JSON.stringify(arr))
+
+              var nodes1 = new vis.DataSet(arrNodes)
+
+              //console.log(node1)
+
+              //console.log(nodes)
+
+              //node1.add(arr)
+
+              console.log(data["edges"])
+
+              var edgeColor = {color:"#848484"}
+
+              var edgeArrow =  {
+                "to": {enabled: true, scaleFactor:0.8, type:'arrow'}
+              }
+
+              data["edges"].forEach(function (gEdge) {
+                  var tmp = {}
+                  tmp["from"] = gEdge.head
+                  tmp["to"] = gEdge.tail
+                  tmp["color"] = edgeColor
+                  tmp["arrows"] = edgeArrow
+                  tmp["label"] = ''+gEdge.weight
+
+                  arrEdges.push(tmp)
+              })
+              var edges1 = new vis.DataSet(arrEdges)
+
+              console.log(edges1)
+              //console.log(edges)
+              var data1 = {
+              nodes: nodes1,
+              edges: edges1
+            };
+
+            var network = new vis.Network(container, data1, options);
           })
 
   </script>
