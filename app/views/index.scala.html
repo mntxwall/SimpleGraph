@@ -56,13 +56,8 @@
           //var network = new vis.Network(container, data, options);
 
           $.get("/hello", function (data) {
-              //console.log(data)
-
-
               var arrNodes = []
               var arrEdges = []
-
-              //
 
               data["nodes"].forEach(function(gnode){
 
@@ -75,19 +70,8 @@
               })
 
 
-              /*data.forEach(function (element) {
-                  //console.log(element)
-                  arr.push(element)
-              })*/
-              //console.log(JSON.stringify(arr))
-
               var nodes1 = new vis.DataSet(arrNodes)
 
-              //console.log(node1)
-
-              //console.log(nodes)
-
-              //node1.add(arr)
 
               console.log(data["edges"])
 
