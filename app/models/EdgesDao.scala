@@ -35,14 +35,12 @@ class EdgesDao @Inject()(dbApi: DBApi){
 
 
   def NodesWithEdges(): EdgeGraph = {
-
     EdgeGraph(EdgesNodes(), OneRow())
   }
 
 
 
   def OneRow(): List[Edge] = {
-
     db.withConnection { implicit c =>
       SQL("select * from edges").as(rowParser1.*)
     }

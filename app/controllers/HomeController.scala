@@ -4,7 +4,9 @@ import javax.inject._
 import play.api.mvc._
 import play.api.Logger
 import play.api.libs.json._
-import models.{Edge, EdgesDao}
+import play.api.libs.functional.syntax._
+
+import models.{Edge, EdgeGraph, EdgeNode, EdgesDao}
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -33,13 +35,22 @@ class HomeController @Inject()(cc: ControllerComponents,
     val hello2 = edgeDao.NodesWithEdges()
 
     //Logger.debug("Attempting risky calculation.")
-    Logger.debug(s"$hello2")
+    //Logger.debug(s"$hello2")
 
     //json auto mapping
-    implicit val residentWrites = Json.writes[Edge]
+    implicit val edgeWrites = Json.writes[Edge]
+    implicit val nodesWrites = Json.writes[EdgeNode]
+
+    implicit val graphWrites: Writes[EdgeGraph] = (
+      (JsPath \ "nodes").write[List[String]] and
+        (JsPath \ "edges").write[List[Edge]]
+      )(unlift(EdgeGraph.unapply))
     
     //Ok(views.html.hello(hello))
-    val json = Json.toJson(hello)
+    //val json = Json.toJson(hello)
+    //Ok(json)
+
+    val json = Json.toJson(hello2)
     Ok(json)
   }
 }
