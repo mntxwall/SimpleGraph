@@ -1,20 +1,35 @@
 @()(implicit assetsFinder: AssetsFinder)
 
 @main("Welcome to Play") {
-  <div id="mynetwork"  style="width: 768px;height:1024px;">
+  <div id="mynetwork"  style="width: 600px;height:800px;">
     <div class="vis-network">
       <canvas></canvas>
     </div>
   </div>
 
+  <div id="hello">
+
+      <button id="testClickBtn">Click</button>
+  </div>
+
   <script type="text/javascript">
 
           // create an array with nodes
+
+          let clickNodes = [];
           var nodes = new vis.DataSet([
             {
               id: 1,
               label: '1',
               group: "initGroup"
+              /*
+              chosen:{
+                node:function (values, id, selected, hovering) {
+
+                  values.color = "#FF331D"
+                },
+                edge: false
+              }*/
             },
             {id: 2, label: '2', group: "initGroup"},
             {id: 3, label: '3', group: "initGroup"},
@@ -49,58 +64,74 @@
               initGroup:{
                 color:{background: '#D2E5FF', border: "#2B7CE9"},
                 shape:"circle",
-                margin:12
+                margin:12,
+                chosen:{
+                  node:function (values) {
+
+                      values.color = "#FF331D"
+                  }
+                }
               }
+            },
+            interaction:{
+              multiselect: true,
+              selectConnectedEdges: false
             }
           };
-          //var network = new vis.Network(container, data, options);
+          var network = new vis.Network(container, data, options);
 
           $.get("/hello", function (data) {
-              var arrNodes = []
-              var arrEdges = []
+              var arrNodes = [];
+              var arrEdges = [];
 
               data["nodes"].forEach(function(gnode){
 
-                  var tmp = {}
-                  tmp["id"] = gnode
-                  tmp["label"] = gnode
-                  tmp["group"] = "initGroup"
+                  var tmp = {};
+                  tmp["id"] = gnode;
+                  tmp["label"] = gnode;
+                  tmp["group"] = "initGroup";
 
                   arrNodes.push(tmp)
-              })
+              });
 
 
-              var nodes1 = new vis.DataSet(arrNodes)
+              var nodes1 = new vis.DataSet(arrNodes);
+//              console.log(data["edges"])
 
-
-              console.log(data["edges"])
-
-              var edgeColor = {color:"#848484"}
+              var edgeColor = {color:"#848484"};
 
               var edgeArrow =  {
                 "to": {enabled: true, scaleFactor:0.8, type:'arrow'}
-              }
+              };
 
               data["edges"].forEach(function (gEdge) {
-                  var tmp = {}
-                  tmp["from"] = gEdge.head
-                  tmp["to"] = gEdge.tail
-                  tmp["color"] = edgeColor
-                  tmp["arrows"] = edgeArrow
-                  tmp["label"] = ''+gEdge.weight
+                  var tmp = {};
+                  tmp["from"] = gEdge.head;
+                  tmp["to"] = gEdge.tail;
+                  tmp["color"] = edgeColor;
+                  tmp["arrows"] = edgeArrow;
+                  tmp["label"] = ''+gEdge.weight;
 
                   arrEdges.push(tmp)
-              })
-              var edges1 = new vis.DataSet(arrEdges)
-
-              console.log(edges1)
+              });
+              var edges1 = new vis.DataSet(arrEdges);
+              //console.log(edges1)
               //console.log(edges)
               var data1 = {
               nodes: nodes1,
               edges: edges1
             };
 
-            var network = new vis.Network(container, data1, options);
+            //var network = new vis.Network(container, data1, options);
+
+            network.on('click', function (params) {
+                //console.log(params)
+                clickNodes = params.nodes
+            })
+          });
+
+          $('#testClickBtn').click(function () {
+              console.log(clickNodes)
           })
 
   </script>
