@@ -4,9 +4,10 @@
 
     <p>This is FileUpload</p>
     @helper.form(action = routes.TestController.upload, 'id -> "helloForm", 'enctype -> "multipart/form-data") {
+
         <input type="file" name="picture">
         <p>
-            <input type="button" id="formSubmit" value="hello">
+            <input type="submit" id="formSubmit1" value="hello">
         </p>
     }
 
@@ -14,6 +15,19 @@
             $("#formSubmit").click(function () {
                 //console.log("HelloForm");
                 let form = document.getElementById("helloForm");
+
+                //console.log($("#helloForm")[0]);
+                $.ajax({
+                  url: '/upload',
+                  type: 'POST',
+                  cache: false,
+                  data: new FormData(form),
+                  processData: false,
+                  contentType: false
+                  }).done(function(res) {
+                    console.log(res);
+                  });
+
             });
     </script>
 }

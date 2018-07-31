@@ -1,6 +1,7 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
+import play.api.libs.json._
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext
@@ -11,13 +12,15 @@ class TestController @Inject() (cc:MessagesControllerComponents)
                                (implicit assetsFinder: AssetsFinder)
   extends MessagesAbstractController(cc){
 
-  def index = Action {
+  def index = Action { implicit  request =>
     Ok(views.html.files())
   }
 
   def upload = Action(parse.multipartFormData) { implicit  request =>
     //Ok(views.html.files())
-    Ok("File uploaded")
+
+    //Ok("File uploaded")
+    Ok("hello")
   }
 
 
