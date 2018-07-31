@@ -7,7 +7,7 @@
 
         <input type="file" name="picture">
         <p>
-            <input type="submit" id="formSubmit1" value="hello">
+            <input type="button" id="formSubmit" value="hello">
         </p>
     }
 
@@ -18,7 +18,7 @@
 
                 //console.log($("#helloForm")[0]);
                 $.ajax({
-                  url: '/upload',
+                  url: '/files',
                   type: 'POST',
                   cache: false,
                   data: new FormData(form),
