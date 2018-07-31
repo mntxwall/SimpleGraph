@@ -1,0 +1,19 @@
+@()(implicit assetsFinder: AssetsFinder)
+
+@main("HelloFiles"){
+
+    <p>This is FileUpload</p>
+    @helper.form(action = routes.TestController.upload, 'id -> "helloForm", 'enctype -> "multipart/form-data") {
+        <input type="file" name="picture">
+        <p>
+            <input type="button" id="formSubmit" value="hello">
+        </p>
+    }
+
+    <script type="text/javascript">
+            $("#formSubmit").click(function () {
+                //console.log("HelloForm");
+                let form = document.getElementById("helloForm");
+            });
+    </script>
+}

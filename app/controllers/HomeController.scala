@@ -22,12 +22,12 @@ class HomeController @Inject()(cc: ControllerComponents,
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index() = Action {
+  def index = Action {
 
     Ok(views.html.index())
   }
 
-  def hello() = Action{
+  def hello = Action{
     val hello = edgeDao.OneRow()
 
     val hello1 = edgeDao.EdgesNodes()
