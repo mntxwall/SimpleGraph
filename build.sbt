@@ -13,6 +13,7 @@ libraryDependencies += guice
 libraryDependencies += jdbc
 libraryDependencies += "org.postgresql" % "postgresql" % "42.2.2"
 libraryDependencies += "org.playframework.anorm" %% "anorm" % "2.6.2"
+libraryDependencies += "com.github.albfernandez" % "juniversalchardet" % "2.1.0"
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
 
 
