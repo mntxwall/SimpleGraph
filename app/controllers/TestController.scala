@@ -2,8 +2,11 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 import java.nio.file.Paths
+
 import play.api.mvc._
 import org.mozilla.universalchardet.UniversalDetector
+import play.api.libs.json._
+import play.api.Logger
 
 import scala.concurrent.ExecutionContext
 
@@ -40,23 +43,42 @@ class TestController @Inject() (cc:MessagesControllerComponents)
       var nread = 0
       nread = fis.read(buf)
 
-      while (nread > 0 && !detector.isDone){
 
+      while (nread > 0 && !detector.isDone) {
+        detector.handleData(buf, 0, nread)
+        nread = fis.read(buf)
       }
 
+      detector.dataEnd()
+
+      val encoding: Option[String] = Option(detector.getDetectedCharset)
+
+
+      detector.reset()
       /*
       while ( {
         ((nread = fis.read(buf)) > 0) && !detector.isDone
       }) detector.handleData(buf, 0, nread)
       // (3)
       */
-      detector.dataEnd()
 
       // (4)
-      val encoding = detector.getDetectedCharset
+      //val jsonVal: JsValue = JsString("hello")
+      Logger.debug(encoding.getOrElse("bad"))
+      val jsonVal: JsValue = Json.parse(s"""
+      {
+        "name" : "${encoding.getOrElse("Error")}"
+      }
+      """)
+      //Ok(jsonVal)
+      Ok(jsonVal)
 
 
-      Ok("File uploaded")
+
+
+
+      //Ok(s"File uploaded ${encoding}")
+
     }.getOrElse {
       Ok("Upload Faild")
     }
