@@ -62,4 +62,11 @@ class EdgesDao @Inject()(dbApi: DBApi){
     (headVertex ++ tailVertex).toSet.toList
 
   }
+
+  def testAddFiles():Unit = {
+
+    db.withConnection{implicit c =>
+      val result: Boolean = SQL("COPY country FROM '/home/cw/Documents/hi.csv'").execute()
+    }
+  }
 }

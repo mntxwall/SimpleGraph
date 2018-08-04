@@ -64,17 +64,21 @@ class TestController @Inject() (cc:MessagesControllerComponents)
 
       // (4)
       //val jsonVal: JsValue = JsString("hello")
-      Logger.debug(encoding.getOrElse("bad"))
+      //Logger.debug(encoding.getOrElse("bad"))
       val jsonVal: JsValue = Json.parse(s"""
       {
         "name" : "${encoding.getOrElse("Error")}"
       }
       """)
+
+      encoding match {
+        case Some("UTF-8") =>
+          Logger.debug("This is UTF-8 file")
+        case None =>
+          Logger.debug("Can't find file encoding")
+      }
       //Ok(jsonVal)
       Ok(jsonVal)
-
-
-
 
 
       //Ok(s"File uploaded ${encoding}")
