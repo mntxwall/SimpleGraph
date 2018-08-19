@@ -2,7 +2,6 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 import java.nio.file._
-import java.io.File
 import java.nio.file.Files
 import java.nio.file.attribute.PosixFilePermissions
 
@@ -48,6 +47,7 @@ class TestController @Inject() (cc:MessagesControllerComponents,edgeDao: EdgesDa
       ///picture.ref.moveTo(newfile, replace = true)
 
 
+      //change file permissions add read privileges to the file
       Files.setPosixFilePermissions(Paths.get(s"$fileWithPath"),
       PosixFilePermissions.fromString("rw-r--r--"))
 
