@@ -69,4 +69,10 @@ class EdgesDao @Inject()(dbApi: DBApi){
       val result: Boolean = SQL("COPY country FROM '/home/cw/Documents/hi.csv'").execute()
     }
   }
+
+  def importDataFromfiles(filename:String):Unit = {
+    db.withConnection{ implicit c =>
+      SQL(s"COPY edges(head_vertex,tail_vertex,weight) FROM '$filename' with DELIMITER ','").execute()
+    }
+  }
 }
