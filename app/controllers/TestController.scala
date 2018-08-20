@@ -36,25 +36,25 @@ class TestController @Inject() (cc:MessagesControllerComponents,edgeDao: EdgesDa
       //val filename = Paths.get(picture.filename).getFileName
 
       val filename = picture.filename
-
       //val newfile = new File(s"/home/cw/$filename")
-
-      val fileWithPath:String = s"/home/cw/$filename"
+      val fileWithPath:String = s"/tmp/fileuploads/$filename"
       //Copy the upload file to /tmp/files directory
       //picture.ref.moveTo(Paths.get(s"/tmp/files/$filename"), replace = true)
       //picture.ref.moveTo(Paths.get(s"/tmp/files/$filename"), replace = true)
-      picture.ref.moveTo(Paths.get(s"/home/cw/$filename"),replace = true)
+      //picture.ref.moveTo(Paths.get(s"/home/cw/$filename"),replace = true)
+      picture.ref.atomicMoveWithFallback(Paths.get(fileWithPath))
       ///picture.ref.moveTo(newfile, replace = true)
 
 
       //change file permissions add read privileges to the file
-      Files.setPosixFilePermissions(Paths.get(s"$fileWithPath"),
+      Files.setPosixFilePermissions(Paths.get(fileWithPath),
       PosixFilePermissions.fromString("rw-r--r--"))
 
       //newfile.set
 
 
 
+      //import data with COPY command
       edgeDao.importDataFromfiles(fileWithPath)
       //read line from the upload file and insert into database;
 
